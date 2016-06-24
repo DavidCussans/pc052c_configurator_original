@@ -1,40 +1,30 @@
-//DAC Control NINO32
+//pc052a_configurator
+//P. Baesso  - paolo.baesso@bristol.ac.uk
+//This firmware can be installed on a KL25Z board and provides
+//a serial interface to configure the pc052a board.
+//The communication between KL25Z and pc052a uses the SPI interface.
 
 #include "mbed.h"
 #include <led_options.h>
 #include <spi_functions.h>
 
-//#include "USBSerial.h"
-
+// DEFINE SERIAL INTERFACE AND PINS USED BY THE SPI PROTOCOL
 //Serial pc(USccBTX, USBRX);
 Serial pc(USBTX, USBRX); // tx, rx
-
 DigitalOut myled(LED1);
-
 SPI dac_port(PTD2, PTD3, PTD1); //mosi, miso, sclk
+DigitalOut sync(PTD5, 1);// slave select. Initialize to high
+//DigitalOut ldac(PTD7);
 
-DigitalOut sync(PTD5, 1);// Initialize the sync to high
-DigitalOut ldac(PTD7);
-
-
-float volt[8];
 unsigned short myData; 
-
-unsigned short dummy_2byte;
-
-
-// dac_data
-
 int i, j;
 
 int main()
-
 {
     pc.printf("\nStarting interface.\n");
     pc.printf("Press 'h' for a list of commands.\n");
     flashLED( myled);
     dac_port.format(8,0);   //SPI setup for dac chips 8 bit data, mode 1 (falling edge), mode 0 (rising edge, active clock is 1). Max7301A requires rising edge.
-                            //        serialOut.printf("DEBUG %d_a.\n", i); 
     dac_port.frequency(100000);
 
     
