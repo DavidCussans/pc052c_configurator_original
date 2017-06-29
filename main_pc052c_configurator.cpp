@@ -29,9 +29,9 @@ SPI dac_port8(PTE3, PTD6, PTE2);    //SPI1
 DigitalOut sync1(PTD5, 1);// Board 1 slave select. Initialize to high 
 DigitalOut sync2(PTD0, 1); // Board 2 slave select. Initialize to high good to go
 DigitalOut sync3(PTE4, 1); // Board 3 slave select. Initialize to high GOOD TO GO
-DigitalOut sync4(PTA14, 1);// Board 4 slave select. Initialize to high GOOD TO GO
+DigitalOut sync4(PTC5, 1);// Board 4 slave select. Initialize to high GOOD TO GO
 DigitalOut sync5(PTB10, 1); // Board 5 slave select. Initialize to high good to go
-DigitalOut sync6(PTE4, 1);// Board 6 slave select. Initialize to high 
+DigitalOut sync6(PTB11, 1);// Board 6 slave select. Initialize to high 
 DigitalOut sync7(PTD4, 1);// Board 7 slave select. Initialize to high good to go
 DigitalOut sync8(PTC4, 1); // Board 8 slave select. Initialize to high good to go
 //DigitalOut ldac(PTD7);
