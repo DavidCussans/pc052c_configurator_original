@@ -367,7 +367,7 @@ void doCommands(std::vector<std::string>& tokens)
                 pc.printf("The board number has to be between 1 and 8.\n");
         }
         else
-            pc.printf("pulldown can take only 1 argument. pullup 6 pulls all ports up in board 6.\n");
+            pc.printf("pullup can take only 1 argument. pullup 6 pulls all ports up in board 6.\n");
     }
     else if(firstTk=="pullalldown")
     {
@@ -446,7 +446,7 @@ void doCommands(std::vector<std::string>& tokens)
                 pc.printf("The board number has to be between 1 and 8.\n");
         }
         else
-            pc.printf("pulldown can take only 1 argument. pulldown 6 pulls all ports down in board 6.\n\n");
+            pc.printf("pulldown can take only 1 argument. pulldown 6 pulls all ports down in board 6.\n");
     }   
     else if(firstTk == "send")
     {
