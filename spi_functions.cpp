@@ -44,14 +44,16 @@ int mySPISend( unsigned short data, SPI &dac_port, DigitalOut &sync)
 // This is the basic function used to send the signals.
 {
     //sync = 1;
-    wait (0.5);
+    wait (0.001); // Changed from 0.5, DGC, 1 Oct 18
 
     sync = 0;
+    
+    wait(0.0001); // wait 100us for select line to go fully low after . 
     
     dac_port.write(data >> 8);// We have a 8 bit interface but need to write 16 bits. Two write in sequence (or use "transfer" instead)
     dac_port.write(data);
     
-    wait(0.000005); //
+    wait(0.0001); // wait 100us for select line to go fully high. 
     sync = 1;
 
     wait (0.5);

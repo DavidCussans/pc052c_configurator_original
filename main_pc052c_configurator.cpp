@@ -20,7 +20,7 @@ Serial pc(USBTX, USBRX); // tx, rx
 DigitalOut myled(LED1);
 SPI dac_port1(PTD2, PTD3, PTD1); //mosi, miso, sclk //SPI0
 SPI dac_port2(PTD2, PTC6, PTD1);  //SPI0
-SPI dac_port3(PTD2, PTC7, PTD1);    //SPI0
+SPI dac_port3(PTD2, PTC3, PTD1);    //SPI0
 SPI dac_port4(PTD2, PTA16, PTD1); //SPI0
 SPI dac_port5(PTD2, PTA17, PTD1); //SPI0
 SPI dac_port6(PTE3, PTD7, PTE2);    //SPI1
@@ -28,7 +28,8 @@ SPI dac_port7(PTE3, PTE1, PTE2);    //SPI1
 SPI dac_port8(PTE3, PTD6, PTE2);    //SPI1
 DigitalOut sync1(PTD5, 1);// Board 1 slave select. Initialize to high 
 DigitalOut sync2(PTD0, 1); // Board 2 slave select. Initialize to high good to go
-DigitalOut sync3(PTE4, 1); // Board 3 slave select. Initialize to high GOOD TO GO
+//DigitalOut sync3(PTE4, 1); // Board 3 slave select. Initialize to high GOOD TO GO
+DigitalOut sync3(PTE5, 1); // Board 3 slave select. Initialize to high GOOD TO GO
 DigitalOut sync4(PTC5, 1);// Board 4 slave select. Initialize to high GOOD TO GO
 DigitalOut sync5(PTB10, 1); // Board 5 slave select. Initialize to high good to go
 DigitalOut sync6(PTB11, 1);// Board 6 slave select. Initialize to high 
@@ -43,6 +44,7 @@ string myCommand;
 
 int main()
 {
+    pc.printf("\npc052c Configurator v0.8\n");
     pc.printf("\nStarting interface.\n");
     pc.printf("Enter commands and press TAB to send.\n");
     pc.printf("Type 'help'+TAB for a list of commands.\n");
@@ -71,7 +73,7 @@ int main()
     {
         if(pc.readable())
         {
-            pc.printf("Entering reading condition");
+            pc.printf("Entering reading condition\n");
             cUser = pc.getc();
             wait(0.02f); //
             if (cUser== '\t')// \n"
@@ -147,7 +149,7 @@ void doCommands(std::vector<std::string>& tokens)
     }
     else if(firstTk == "help") //Help
     {
-        pc.printf("Type commands and press TAB to execute them.\n Valid commands are:\n'exit'\n'help'\n'powermode'\n'configure'\n'setport'\n'send'\n'pullallup'\n'pullalldown'\n'pulldown'\n'pullup'");
+        pc.printf("**Type commands and press TAB to execute them.\n Valid commands are:\n'exit'\n'help'\n'powermode'\n'configure'\n'setport'\n'send'\n'pullallup'\n'pullalldown'\n'pulldown'\n'pullup'\n\n");
     }
     else if(firstTk == "configure")//Send configuration
     {
@@ -373,6 +375,7 @@ void doCommands(std::vector<std::string>& tokens)
     {
         if (tokens.size() ==1)
         {
+            pc.printf("Pulling all ports down in boards 1 to 8.\n");
             for(int a=12;a<=31;a++)
             {
                 setPort(dac_port1, sync1, a, 0);
@@ -384,7 +387,7 @@ void doCommands(std::vector<std::string>& tokens)
                 setPort(dac_port7, sync7, a, 0);
                 setPort(dac_port8, sync8, a, 0);
             }
-            pc.printf("Pulling all ports down in boards 1 to 8.\n");
+            pc.printf("Pulled all ports down in boards 1 to 8.\n");
         }
         else 
             pc.printf("pullalldown does not take any arguments. It pulls all ports down in all the boards.\n");
