@@ -20,7 +20,7 @@ Serial pc(USBTX, USBRX); // tx, rx
 DigitalOut myled(LED1);
 SPI dac_port1(PTD2, PTD3, PTD1); //mosi, miso, sclk //SPI0
 SPI dac_port2(PTD2, PTC6, PTD1);  //SPI0
-SPI dac_port3(PTD2, PTC3, PTD1);    //SPI0
+SPI dac_port3(PTD2, PTC7 , PTD1);    //SPI0 -- clashes with Rx
 SPI dac_port4(PTD2, PTA16, PTD1); //SPI0
 SPI dac_port5(PTD2, PTA17, PTD1); //SPI0
 SPI dac_port6(PTE3, PTD7, PTE2);    //SPI1
@@ -28,8 +28,8 @@ SPI dac_port7(PTE3, PTE1, PTE2);    //SPI1
 SPI dac_port8(PTE3, PTD6, PTE2);    //SPI1
 DigitalOut sync1(PTD5, 1);// Board 1 slave select. Initialize to high 
 DigitalOut sync2(PTD0, 1); // Board 2 slave select. Initialize to high good to go
-//DigitalOut sync3(PTE4, 1); // Board 3 slave select. Initialize to high GOOD TO GO
-DigitalOut sync3(PTE5, 1); // Board 3 slave select. Initialize to high GOOD TO GO
+DigitalOut sync3(PTE4, 1); // Board 3 slave select. Initialize to high GOOD TO GO
+//DigitalOut sync3(PTE5, 1); // Board 3 slave select. Initialize to high GOOD TO GO
 DigitalOut sync4(PTC5, 1);// Board 4 slave select. Initialize to high GOOD TO GO
 DigitalOut sync5(PTB10, 1); // Board 5 slave select. Initialize to high good to go
 DigitalOut sync6(PTB11, 1);// Board 6 slave select. Initialize to high 
