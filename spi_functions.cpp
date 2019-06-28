@@ -56,7 +56,7 @@ int mySPISend( unsigned short data, SPI &dac_port, DigitalOut &sync)
     wait(0.0001); // wait 100us for select line to go fully high. 
     sync = 1;
 
-    wait (0.5);
+    wait (0.05); // changed from 0.5 , DGC, May 2019
     return 0;    
 }
 

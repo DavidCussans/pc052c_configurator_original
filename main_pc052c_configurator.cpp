@@ -44,7 +44,7 @@ string myCommand;
 
 int main()
 {
-    pc.printf("\npc052c Configurator v0.8\n");
+    pc.printf("\npc052c Configurator v0.9\n");
     pc.printf("\nStarting interface.\n");
     pc.printf("Enter commands and press TAB to send.\n");
     pc.printf("Type 'help'+TAB for a list of commands.\n");
