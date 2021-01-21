@@ -5,6 +5,7 @@
 int sendConfiguration(Serial &serialOut,  SPI &dac_port, DigitalOut &sync)
 {
     int nWords= 12;
+    int returnedData;
     unsigned short dac_data[nWords];
     
     //CONFIGURE ALL PORTS AS OUTPUTS
@@ -27,7 +28,9 @@ int sendConfiguration(Serial &serialOut,  SPI &dac_port, DigitalOut &sync)
     for (int i = 0; i < nWords; i++)
     {
         serialOut.printf("WRITING %d (0x%04x).\n", dac_data[i], dac_data[i]);
-        mySPISend(dac_data[i], dac_port, sync);
+        returnedData = mySPISend(dac_data[i], dac_port, sync);
+        //returnedData = mySPIRead(serialOut, dac_data[i], dac_port, sync);
+        serialOut.printf("Read back 0x%04x \n" , returnedData );
     }
     return 0;
 }
@@ -43,21 +46,24 @@ int sendTransfer(unsigned short data,  SPI &dac_port, DigitalOut &sync)
 int mySPISend( unsigned short data, SPI &dac_port, DigitalOut &sync)
 // This is the basic function used to send the signals.
 {
+    unsigned short return1, return2;
+    
     //sync = 1;
     wait (0.001); // Changed from 0.5, DGC, 1 Oct 18
 
-    sync = 0;
+    sync = 0; // drive chip select
     
-    wait(0.0001); // wait 100us for select line to go fully low after . 
+    wait(0.0001); // wait 100us for select line to go fully low after selecting chip . 
     
-    dac_port.write(data >> 8);// We have a 8 bit interface but need to write 16 bits. Two write in sequence (or use "transfer" instead)
-    dac_port.write(data);
+    return1 = dac_port.write(data >> 8);// We have a 8 bit interface but need to write 16 bits. Two write in sequence (or use "transfer" instead)
+    return2 = dac_port.write(data);
     
     wait(0.0001); // wait 100us for select line to go fully high. 
     sync = 1;
 
-    wait (0.05); // changed from 0.5 , DGC, May 2019
-    return 0;    
+    wait (0.001); // changed from 0.5 , DGC, May 2019
+    return ( return2 | (return1 << 8) );
+
 }
 
 ////////////////////////////////////////////////////////
@@ -66,7 +72,7 @@ int mySPIRead(Serial &serialOut,  unsigned short data, SPI &dac_port, DigitalOut
 {
     unsigned short nopdata= 0x0000;
     unsigned short return1, return2;
-    wait (0.5);
+    wait (0.05);
 
     sync = 0;
     
@@ -74,19 +80,19 @@ int mySPIRead(Serial &serialOut,  unsigned short data, SPI &dac_port, DigitalOut
     dac_port.write(data);
     
     wait(0.000005); //
-    sync = 1;
+ //   sync = 1;
     
-    wait (0.2);
-    sync = 0;
+ //   wait (0.00002);
+ //   sync = 0;
     
     return1= dac_port.write(nopdata >> 8);// No operation. Used to flush the 16 bits.
     return2= dac_port.write(nopdata);
     
     wait(0.000005); //
     sync = 1;
-    wait (0.5);
+    wait (0.05);
     serialOut.printf("Returned data = %d (0x%04x), %d (0x%04x).\n", return1, return1, return2, return2);
-    return 0;    
+    return ( return2 | (return1 << 8) );    
 }
 
 ////////////////////////////////////////////////////////
