@@ -3,6 +3,8 @@
 //This firmware can be installed on a KL25Z board and provides
 //a serial interface to configure the pc052c board.
 //The communication between KL25Z and pc052c uses the SPI interface.
+// Original before porting to BufferedSerial and tidying UI
+// David Cussans, April 2023
 
 #include "mbed.h"
 #include <led_options.h>
